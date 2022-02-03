@@ -17,7 +17,6 @@ const Featured = () => {
     }else if(direction === 'r'){
       setIndex(index !== images.length - 1 ? index + 1 : 0 )
     }
-    console.log(index);
   }
 
   return (
