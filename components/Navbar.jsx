@@ -27,7 +27,9 @@ function Navbar() {
       </Link>
       <div className={styles.item}>
         <ul className={styles.list}>
+          <Link href="/" passHref>
           <li className={styles.listItem}>Homepage</li>
+          </Link>
 
           <li className={styles.listItem}>Products</li>
 

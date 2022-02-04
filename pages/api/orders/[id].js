@@ -2,31 +2,30 @@ import dbConnect from "../../../util/mongo";
 import Order from "../../../models/order";
 
 const handler = async (req, res) => {
+  const { method, query:{id} } = req;
 
-  const {
-    method,
-    query: { id },
-  } = req;
-
-  await dbConnect()
+  await dbConnect();
 
   if (method === "GET") {
     try {
-      const orders = await Order.find();
-      res.status(200).json(orders);
+      const order = await Order.findById(id);
+      res.status(200).json(order);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json(error);
     }
   }
 
-  if (method === "POST") {
+  if (method === "PUT") {
     try {
-      const order = await Order.create(req.body);
-      res.status(201).json(order);
+      const order = await Order.findByIdAndUpdate(id, req.body,{new: true});
+      res.status(200).json(order);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json(error);
     }
+  }
+
+  if (method === "DELETE") {
   }
 };
 
-export default handler
+export default handler;
