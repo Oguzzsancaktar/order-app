@@ -4,9 +4,11 @@ import Product from "../../../models/product.js";
 export default async function handler(req, res) {
   const {
     method,
-    query:{id}
+    query: { id },
+    cookies,
   } = req;
 
+  const token = cookies.token;
   dbConnect();
 
   if (method === "GET") {
@@ -20,6 +22,9 @@ export default async function handler(req, res) {
 
   if (method === "PUT") {
     try {
+      if (!token || token !== process.env.TOKEN) {
+        res.status(401).json({ message: "Unauthorized" });
+      }
       const { body } = req;
       const product = await Product.create(body);
 
@@ -31,8 +36,11 @@ export default async function handler(req, res) {
 
   if (method === "DELETE") {
     try {
-      await Product.findByIdAndDelete(req.body.id);
-      res.status(200).json('The product has been deleted');
+      if (!token || token !== process.env.TOKEN) {
+        res.status(401).json({ message: "Unauthorized" });
+      }
+      await Product.findByIdAndDelete(id);
+      res.status(200).json("The product has been deleted");
     } catch (error) {
       res.status(500).json(error);
     }

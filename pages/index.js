@@ -1,9 +1,13 @@
+import React, { useState } from "react";
 import axios from "axios";
 import Head from "next/head";
 import Featured from "../components/Featured";
 import ProductList from "../components/ProductList";
+import Add from "../components/Add";
+import AddButton from "../components/AddButton";
 
 export default function Home({ productList, admin }) {
+  const [close, setClose] = useState(true);
   return (
     <div>
       <Head>
@@ -13,8 +17,9 @@ export default function Home({ productList, admin }) {
       </Head>
       <Featured />
 
-      {admin && <span>Hello</span>}
+      {admin && <AddButton setClose={setClose} />}
       <ProductList productList={productList} />
+      {!close && <Add setClose={setClose}/>}
     </div>
   );
 }
